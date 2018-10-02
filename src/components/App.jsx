@@ -5,25 +5,35 @@ import exampleVideoData from '../data/exampleVideoData.js';
 class App extends React.Component {
   constructor (props) {
     super(props);
+    
+    this.onClick = (clickedVideo) => {
+      this.onVideoListClick.call(this, clickedVideo);
+    };
+    
     this.state = {
       currentVideo: exampleVideoData[0]
       // listVideos: exampleVideoData.filter((video) => {
       //   return video !== this.state.currentVideo;
       // })
-    }
+    };
   }
   
-  onVideoListClick() {
-    this.setState({
-      currentVideo: !this.state.currentVideo
-    });
+  onVideoListClick(clickedVideo) {
+    if(clickedVideo !== this.state.currentVideo) {
+      this.setState({currentVideo: clickedVideo});
+      }
   }
   
-  getCurrentVideo(props) {
-    exampleVideoData.filter
-  }
+  // getCurrentVideo(props) {
+  //   exampleVideoData.filter
+  // }
+  
   
   render() {
+    // let props = {
+    //   videos: exampleVideoData,
+    //   somethingElse: exampleVideoData
+    // };
     return(
       <div>
         <nav className="navbar">
@@ -36,7 +46,7 @@ class App extends React.Component {
             <VideoPlayer video = {this.state.currentVideo} />
           </div>
           <div className="col-md-5">
-            <VideoList videos = {exampleVideoData} />
+            <VideoList videos= {exampleVideoData} newOnClick= {this.onClick}  />
           </div>
         </div>
       </div>
