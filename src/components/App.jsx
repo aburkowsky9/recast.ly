@@ -5,7 +5,12 @@ import exampleVideoData from '../data/exampleVideoData.js';
 class App extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {currentVideo: false};
+    this.state = {
+      currentVideo: exampleVideoData[0]
+      // listVideos: exampleVideoData.filter((video) => {
+      //   return video !== this.state.currentVideo;
+      // })
+    }
   }
   
   onVideoListClick() {
@@ -28,7 +33,7 @@ class App extends React.Component {
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <VideoPlayer video = {exampleVideoData[0]} />
+            <VideoPlayer video = {this.state.currentVideo} />
           </div>
           <div className="col-md-5">
             <VideoList videos = {exampleVideoData} />
