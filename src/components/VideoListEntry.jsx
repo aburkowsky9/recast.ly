@@ -5,7 +5,7 @@ var VideoListEntry = (props) => (
       alt="{props.video.snippet.channelTitle}" />
     </div>
     <div className="media-body">
-      <div className="video-list-entry-title" onClick={(event) => props.newOnClick(props.video)} >{props.video.snippet.title}</div>
+      <div className="video-list-entry-title" onClick={(event) => props.newOnClick(props.video)}>{props.video.snippet.title}</div>
       <div className="video-list-entry-detail">{props.video.snippet.description}</div>
     </div>
   </div>
@@ -23,3 +23,4 @@ VideoListEntry.propTypes = {
 export default VideoListEntry;
 
 // onClick = {(event) => } 
+// onClick={(event) => props.newOnClick(props.video)}

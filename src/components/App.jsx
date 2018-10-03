@@ -1,52 +1,66 @@
 import VideoList from './VideoList.js';
 import VideoPlayer from './VideoPlayer.js';
 import exampleVideoData from '../data/exampleVideoData.js';
+import Search from './Search.js'
+// import searchYouTube from '../lib/searchYouTube.js'
+import YOUTUBE_API_KEY from '../config/youtube.js';
 
 class App extends React.Component {
   constructor (props) {
     super(props);
     
-    this.onClick = (clickedVideo) => {
-      this.onVideoListClick.call(this, clickedVideo);
+    this.state = {
+      currentVideo: exampleVideoData[0],
+      listVideos: exampleVideoData
     };
     
-    this.state = {
-      currentVideo: exampleVideoData[0]
-      // listVideos: exampleVideoData.filter((video) => {
-      //   return video !== this.state.currentVideo;
-      // })
-    };
+    this.videoClick = this.onVideoListClick.bind(this);
+    
+    this.searchInput = this.onSearchInput.bind(this);
   }
   
-  onVideoListClick(clickedVideo) {
+  onSearchInput(searchedItem) {
+    this.props.searchYouTube({key: YOUTUBE_API_KEY, max: 5, query: searchedItem}, (data) => { 
+    if (data) {
+      this.setState({
+        currentVideo:data[0],
+        listVideos: data
+      });
+    }
+   })
+  }
+  
+  onVideoListClick (clickedVideo) {
     if(clickedVideo !== this.state.currentVideo) {
       this.setState({currentVideo: clickedVideo});
+    }
+  }
+
+  componentDidMount() {
+    this.props.searchYouTube(undefined, (data) => { 
+      if (data) {
+        this.setState({
+          currentVideo:data[0],
+          listVideos: data
+        });
       }
+    })
   }
   
-  // getCurrentVideo(props) {
-  //   exampleVideoData.filter
-  // }
-  
-  
   render() {
-    // let props = {
-    //   videos: exampleVideoData,
-    //   somethingElse: exampleVideoData
-    // };
     return(
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <Search onSearchInput={this.searchInput}/>
           </div>
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <VideoPlayer video = {this.state.currentVideo} />
+            <VideoPlayer video={this.state.currentVideo} />
           </div>
           <div className="col-md-5">
-            <VideoList videos= {exampleVideoData} newOnClick= {this.onClick}  />
+            <VideoList videos={this.state.listVideos} newOnClick={this.videoClick}  />
           </div>
         </div>
       </div>
@@ -58,4 +72,12 @@ class App extends React.Component {
 // `var` declarations will only exist globally where explicitly defined
 export default App;
 
-// <div><h5><em>videoList</em> view goes here</h5></div>
+    // this.onClick = (clickedVideo) => {
+    //   this.onVideoListClick(clickedVideo);
+    // }
+
+  // onVideoListClick(clickedVideo) => {
+  //     if(clickedVideo !== this.state.currentVideo) {
+  //       this.setState({currentVideo: clickedVideo});
+  //       }
+  //   
