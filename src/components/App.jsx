@@ -2,7 +2,7 @@ import VideoList from './VideoList.js';
 import VideoPlayer from './VideoPlayer.js';
 import exampleVideoData from '../data/exampleVideoData.js';
 import Search from './Search.js'
-// import searchYouTube from '../lib/searchYouTube.js'
+import searchYouTube from '../lib/searchYouTube.js'
 import YOUTUBE_API_KEY from '../config/youtube.js';
 
 class App extends React.Component {
@@ -17,6 +17,8 @@ class App extends React.Component {
     this.videoClick = this.onVideoListClick.bind(this);
     
     this.searchInput = this.onSearchInput.bind(this);
+    
+    this.handleSearchInput = this.handleChange.bind(this);
   }
   
   onSearchInput(searchedItem) {
@@ -30,11 +32,17 @@ class App extends React.Component {
    })
   }
   
+  handleChange(event) {
+    console.log(event);
+    this.onSearchInput(event.target.value);
+  }
+  
   onVideoListClick (clickedVideo) {
     if(clickedVideo !== this.state.currentVideo) {
       this.setState({currentVideo: clickedVideo});
     }
   }
+  
 
   componentDidMount() {
     this.props.searchYouTube(undefined, (data) => { 
@@ -52,7 +60,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search onSearchInput={this.searchInput}/>
+            <Search handleSearchInput={this.handleSearchInput}/>
           </div>
         </nav>
         <div className="row">
